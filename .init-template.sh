@@ -25,6 +25,7 @@ function update_package_json() {
   done
   eval "$SED_COMMAND 's/template-terraform-module/$package_name/g' package.json"
   eval "$SED_COMMAND 's/{{module_description}}/$description/g' package.json"
+  rm package-lock.json
   npm install
 }
 
