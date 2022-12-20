@@ -15,7 +15,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 function update_package_json() {
-  local -r package_name="$1"
+  local -r repository_name="$1"
   local description
 
   until test -n "${description:=${SHORT_DESCRIPTION}}"; do
@@ -23,14 +23,14 @@ function update_package_json() {
     echo '  (e.g. "Contains modules for deploying and managing <type> resources.")'
     read -r description;
   done
-  eval "$SED_COMMAND 's/template-terraform-module/$package_name/g' package.json"
+  eval "$SED_COMMAND 's/template-terraform-module/$repository_name/g' package.json"
   eval "$SED_COMMAND 's/{{module_description}}/$description/g' package.json"
   rm package-lock.json
   npm install
 }
 
 function update_readme() {
-  local -r package_name="$1"
+  local -r repository_name="$1"
   local description
 
   description="${LONG_DESCRIPTION:-${SHORT_DESCRIPTION}}"
@@ -39,15 +39,15 @@ function update_readme() {
     echo '  (e.g. "This repository contains modules for deploying and managing <type> resources. <context>.")'
     read -r description
   done
-  eval "$SED_COMMAND 's/template-terraform-package/$package_name/g' README.md"
+  eval "$SED_COMMAND 's/template-terraform-module/$repository_name/g' README.md"
   eval "$SED_COMMAND 's/{{module_description}}/$description/g' README.md"
 }
 
 function main() {
-  local -r repository_name=$(git remote -v | grep push | sed -e 's|.*/||' | sed -e 's/.git.*//')
+  local -r repository_name=$(git remote -v | grep push | sed -e 's|.*/||' | sed -e 's/\.git.*//')
 
   echo "Initializing repository from template..."
-  echo "Using repository name as the package name ($repository_name)..."
+  echo "Using repository name as the module name ($repository_name)..."
 
   update_package_json "$repository_name"
   update_readme "$repository_name"
