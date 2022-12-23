@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#!/usr/bin/env bash
-
 # This script initializes a repository deployed from this template.
 # Skip prompts by setting environment variables SHORT_DESCRIPTION and/or LONG_DESCRIPTION
 # If LONG_DESCRIPTION is not set then it will default to the value in SHORT_DESCRIPTION
